@@ -19,7 +19,7 @@ class GameCard extends StatelessWidget {
             bottom: paddingVal, left: paddingVal, right: paddingVal),
         child: Card(
           color: config.backgroundColor,
-          elevation: 4,
+          elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -27,8 +27,9 @@ class GameCard extends StatelessWidget {
             padding: const EdgeInsets.all(16.0), // Add padding inside the Card
             child: Center(
               child: Text(
-                description,
-                style: TextStyle(fontSize: 40, color: config.textColor),
+                description.toUpperCase(),
+                style: TextStyle(fontSize: 40, color: config.textColor, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
@@ -54,7 +55,7 @@ class GameCardConfig {
 
   static const GameCardConfig confession = GameCardConfig(
     textColor: Colors.black,
-    backgroundColor: Colors.grey,
+    backgroundColor: Color.fromARGB(255, 124, 124, 124),
   );
 
   static const GameCardConfig deep = GameCardConfig(
@@ -63,7 +64,12 @@ class GameCardConfig {
   );
 }
 
-enum GameCardType { icebreaker, confession, deep }
+enum GameCardType {
+  icebreaker, //0
+  confession, //1
+  deep, //2
+  none //3
+}
 
 GameCardConfig getConfigForType(GameCardType type) {
   switch (type) {
@@ -73,5 +79,7 @@ GameCardConfig getConfigForType(GameCardType type) {
       return GameCardConfig.confession;
     case GameCardType.deep:
       return GameCardConfig.deep;
+    default:
+      return const GameCardConfig();
   }
 }
