@@ -134,6 +134,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+  // Helper to get card type text color
   Color _getCardTypeTextColor(GameCardType type) {
     switch (type) {
       case GameCardType.icebreaker:
@@ -151,6 +152,9 @@ class _HomePageState extends State<HomePage>
   Widget _buildSwipeableCard() {
     if (currentCard == null) return const SizedBox.shrink();
 
+    int dragDistance = 1000;
+    int nextVelocity = 300;
+
     return GestureDetector(
       onTap: _getNextCard,
       onHorizontalDragStart: (details) {
@@ -163,8 +167,8 @@ class _HomePageState extends State<HomePage>
         setState(() {
           _dragOffset += Offset(details.delta.dx, 0);
           // Limit the drag distance
-          if (_dragOffset.dx.abs() > 150) {
-            _dragOffset = Offset(_dragOffset.dx.sign * 150, 0);
+          if (_dragOffset.dx.abs() > dragDistance) {
+            _dragOffset = Offset(_dragOffset.dx.sign * dragDistance, 0);
           }
         });
       },
@@ -172,7 +176,8 @@ class _HomePageState extends State<HomePage>
         final velocity = details.primaryVelocity ?? 0;
 
         // If dragged far enough or with enough velocity, go to next card
-        if (_dragOffset.dx.abs() > 100 || velocity.abs() > 300) {
+        if (_dragOffset.dx.abs() > (dragDistance / 2) ||
+            velocity.abs() > nextVelocity) {
           _getNextCard();
         }
 
@@ -273,7 +278,7 @@ class _HomePageState extends State<HomePage>
         ],
       ),
       body: currentCard == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: Text('No active cards...'))
           : Stack(
               children: [
                 // Main card display with swiper
@@ -285,8 +290,7 @@ class _HomePageState extends State<HomePage>
 
                     // Swipe instructions
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 20),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -309,6 +313,34 @@ class _HomePageState extends State<HomePage>
                                   ),
                                 );
                               },
+                            ),
+                          ),
+
+                          // Card type indicator
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: _getCardTypeBgColor(currentCard!.cardType),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      ColorUtils.withOpacity(Colors.black, 0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              _getCardTypeText(currentCard!.cardType),
+                              style: TextStyle(
+                                color: _getCardTypeTextColor(
+                                    currentCard!.cardType),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
 
@@ -356,39 +388,6 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                   ],
-                ),
-
-                // Type indicator pill at bottom
-                Positioned(
-                  bottom: 60,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: _getCardTypeBgColor(currentCard!.cardType),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: ColorUtils.withOpacity(Colors.black, 0.2),
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        _getCardTypeText(currentCard!.cardType),
-                        style: TextStyle(
-                          color: _getCardTypeTextColor(currentCard!.cardType),
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Colors
 Color icebreakerTextColor = Colors.black;
 Color icebreakerBackgroundColor = Colors.white;
 
@@ -11,6 +12,8 @@ Color deepBackgroundColor = Colors.black;
 
 Color backgroundColor = Colors.grey.shade900;
 
+//Text
 String icebreakerText = 'Icebreaker';
 String confessionText = 'Confession';
 String deepText = 'Deep';
+
