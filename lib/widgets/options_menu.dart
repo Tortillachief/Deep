@@ -20,11 +20,15 @@ class OptionsMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final cardService = context.read<CardService>();
     final settingsProvider = context.read<SettingsProvider>();
+    final screenSize = MediaQuery.of(context).size;
 
     return StatefulBuilder(
       builder: (context, setModalState) {
         return Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.symmetric(
+            horizontal: screenSize.width * 0.04,
+            vertical: 16,
+          ),
           child: Column(
             spacing: optionsSpacing,
             mainAxisSize: MainAxisSize.min,
@@ -266,13 +270,18 @@ class OptionsMenu extends StatelessWidget {
 void showOptionsMenu(BuildContext context, VoidCallback onOptionsApplied) {
   showModalBottomSheet(
     context: context,
-    backgroundColor: Colors.grey.shade800,
+    backgroundColor: ColorUtils.withOpacity(const Color.fromARGB(255, 45, 45, 45), 1),
     isScrollControlled: true,
     isDismissible: false,
     enableDrag: false,
     elevation: 20,
+    constraints: BoxConstraints(
+      maxHeight: MediaQuery.of(context).size.height * 0.9,
+    ),
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-    builder: (context) => OptionsMenu(onOptionsApplied: onOptionsApplied),
+    builder: (context) => SingleChildScrollView(
+      child: OptionsMenu(onOptionsApplied: onOptionsApplied),
+    ),
   );
 }
