@@ -62,15 +62,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
         switchTheme: SwitchThemeData(
-          thumbColor: MaterialStateProperty.resolveWith<Color>((states) {
-            if (states.contains(MaterialState.selected)) {
+          thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.selected)) {
               return icebreakerTextColor;
             }
             return Colors.grey.shade400;
           }),
-          trackColor: MaterialStateProperty.resolveWith<Color>((states) {
-            if (states.contains(MaterialState.selected)) {
-              return icebreakerBackgroundColor.withOpacity(0.5);
+          trackColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return ColorUtils.withOpacity(icebreakerBackgroundColor, 0.5);
             }
             return Colors.grey.shade700;
           }),
@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage>
   }
 
   // Helper to get card type color
-  Color _getCardTypeColor(GameCardType type) {
+  Color _getCardTypeBgColor(GameCardType type) {
     switch (type) {
       case GameCardType.icebreaker:
         return icebreakerBackgroundColor;
@@ -131,6 +131,19 @@ class _HomePageState extends State<HomePage>
         return deepBackgroundColor;
       default:
         return Colors.grey;
+    }
+  }
+
+  Color _getCardTypeTextColor(GameCardType type) {
+    switch (type) {
+      case GameCardType.icebreaker:
+        return icebreakerTextColor;
+      case GameCardType.confession:
+        return confessionTextColor;
+      case GameCardType.deep:
+        return deepTextColor;
+      default:
+        return Colors.black;
     }
   }
 
@@ -172,7 +185,8 @@ class _HomePageState extends State<HomePage>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
         transform: Matrix4.translationValues(_dragOffset.dx, 0, 0)
-          ..rotateZ(_dragOffset.dx / 1000), // Slight rotation for better effect
+          ..translate(
+              _dragOffset.dx / 10), // Slight translation for better effect
         curve: Curves.easeOut,
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
@@ -191,50 +205,6 @@ class _HomePageState extends State<HomePage>
           child: Column(
             key: ValueKey<int>(currentCard!.id),
             children: [
-              // Swipe direction indicators
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Left swipe indicator
-                  AnimatedOpacity(
-                    opacity:
-                        _dragOffset.dx < -20 ? (_dragOffset.dx.abs() / 150) : 0,
-                    duration: const Duration(milliseconds: 50),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: ColorUtils.withOpacity(Colors.white, 0.8),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-
-                  // Right swipe indicator
-                  AnimatedOpacity(
-                    opacity:
-                        _dragOffset.dx > 20 ? (_dragOffset.dx.abs() / 150) : 0,
-                    duration: const Duration(milliseconds: 50),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: ColorUtils.withOpacity(Colors.white, 0.8),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.black,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
               // The actual card
               GameCard(
                 description: currentCard!.description,
@@ -331,7 +301,7 @@ class _HomePageState extends State<HomePage>
                             child: Consumer<CardService>(
                               builder: (context, cardService, _) {
                                 return Text(
-                                  'Cards: ${cardService.filteredCards.length}',
+                                  'Active Cards: ${cardService.filteredCards.length}',
                                   style: TextStyle(
                                     color: ColorUtils.withOpacity(
                                         Colors.white, 0.7),
@@ -342,27 +312,6 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
 
-                          // Swipe hint
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.swipe,
-                                color:
-                                    ColorUtils.withOpacity(Colors.white, 0.6),
-                                size: 16,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Swipe or tap for next card',
-                                style: TextStyle(
-                                  color:
-                                      ColorUtils.withOpacity(Colors.white, 0.6),
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-
                           // Shuffle indicator
                           Consumer<SettingsProvider>(
                             builder: (context, settings, _) {
@@ -371,8 +320,10 @@ class _HomePageState extends State<HomePage>
                                     horizontal: 12, vertical: 6),
                                 decoration: BoxDecoration(
                                   color: settings.shuffleEnabled
-                                      ? Colors.deepPurple.withOpacity(0.3)
-                                      : Colors.white.withOpacity(0.1),
+                                      ? ColorUtils.withOpacity(
+                                          Colors.deepPurple, 0.3)
+                                      : ColorUtils.withOpacity(
+                                          Colors.white, 0.1),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Row(
@@ -381,7 +332,8 @@ class _HomePageState extends State<HomePage>
                                       settings.shuffleEnabled
                                           ? Icons.shuffle
                                           : Icons.sort,
-                                      color: Colors.white.withOpacity(0.7),
+                                      color: ColorUtils.withOpacity(
+                                          Colors.white, 0.7),
                                       size: 14,
                                     ),
                                     const SizedBox(width: 4),
@@ -390,7 +342,8 @@ class _HomePageState extends State<HomePage>
                                           ? 'Random'
                                           : 'Sequential',
                                       style: TextStyle(
-                                        color: Colors.white.withOpacity(0.7),
+                                        color: ColorUtils.withOpacity(
+                                            Colors.white, 0.7),
                                         fontSize: 12,
                                       ),
                                     ),
@@ -407,7 +360,7 @@ class _HomePageState extends State<HomePage>
 
                 // Type indicator pill at bottom
                 Positioned(
-                  bottom: 70,
+                  bottom: 60,
                   left: 0,
                   right: 0,
                   child: Center(
@@ -415,11 +368,11 @@ class _HomePageState extends State<HomePage>
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: _getCardTypeColor(currentCard!.cardType),
+                        color: _getCardTypeBgColor(currentCard!.cardType),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: ColorUtils.withOpacity(Colors.black, 0.2),
                             spreadRadius: 1,
                             blurRadius: 3,
                             offset: const Offset(0, 1),
@@ -428,8 +381,8 @@ class _HomePageState extends State<HomePage>
                       ),
                       child: Text(
                         _getCardTypeText(currentCard!.cardType),
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: _getCardTypeTextColor(currentCard!.cardType),
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
