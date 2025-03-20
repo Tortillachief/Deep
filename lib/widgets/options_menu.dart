@@ -37,7 +37,7 @@ class OptionsMenu extends StatelessWidget {
                   const Text(
                     'Card Options',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -50,39 +50,6 @@ class OptionsMenu extends StatelessWidget {
                     },
                   ),
                 ],
-              ),
-
-              // Stats section
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.black26,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatTile(
-                      title: 'Total Cards',
-                      value: cardService.cards.length.toString(),
-                      icon: Icons.library_books,
-                    ),
-                    _buildStatTile(
-                      title: 'Active Cards',
-                      value: cardService.filteredCards.length.toString(),
-                      icon: Icons.check_circle_outline,
-                    ),
-                    _buildStatTile(
-                      title: 'Filters Active',
-                      value: (!settingsProvider.showIcebreakers ||
-                              !settingsProvider.showConfessions ||
-                              !settingsProvider.showDeeps)
-                          ? 'Yes'
-                          : 'No',
-                      icon: Icons.filter_list,
-                    ),
-                  ],
-                ),
               ),
 
               // Shuffle toggle
@@ -136,7 +103,7 @@ class OptionsMenu extends StatelessWidget {
                   const Text(
                     'Card Types',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
