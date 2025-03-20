@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:deep/game_card.dart';
+import 'package:deep/widgets/game_card.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/services.dart';

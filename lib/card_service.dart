@@ -1,4 +1,4 @@
-import 'package:deep/game_card.dart';
+import 'package:deep/widgets/game_card.dart';
 import 'package:deep/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,30 +17,26 @@ class CardService {
   List<db_helper.Card> cards = [];
   List<db_helper.Card> filteredCards = [];
   int currentIndex = 0;
-  
+
   // Getter for shuffle state
-  bool get shuffleEnabled => 
-      _settingsProvider?.shuffleEnabled ?? true;
-  
+  bool get shuffleEnabled => _settingsProvider?.shuffleEnabled ?? true;
+
   // Card type filter getters
-  bool get showIcebreakers => 
-      _settingsProvider?.showIcebreakers ?? true;
-  bool get showConfessions => 
-      _settingsProvider?.showConfessions ?? true;
-  bool get showDeeps => 
-      _settingsProvider?.showDeeps ?? true;
+  bool get showIcebreakers => _settingsProvider?.showIcebreakers ?? true;
+  bool get showConfessions => _settingsProvider?.showConfessions ?? true;
+  bool get showDeeps => _settingsProvider?.showDeeps ?? true;
 
   // Constructor: Initializes the cards by calling _initializeCards
   CardService(this._database) {
     _initializeCards();
   }
-  
-  // Set the settings provider 
+
+  // Set the settings provider
   void setSettingsProvider(BuildContext context) {
     if (_settingsProvider == null) {
       _settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
       _updateFilteredCards();
-      
+
       // Listen for changes to update filtered cards
       _settingsProvider!.addListener(() {
         _updateFilteredCards();
@@ -54,20 +50,28 @@ class CardService {
 
     cards = dbCards;
     _updateFilteredCards();
-    
-    _initialized.complete(); // Complete the completer when initialization is done
+
+    _initialized
+        .complete(); // Complete the completer when initialization is done
   }
 
   // Method to get cards based on type, waits for initialization to complete
-  Future<List<db_helper.Card>> getCards({GameCardType type = GameCardType.none}) async {
+  Future<List<db_helper.Card>> getCards(
+      {GameCardType type = GameCardType.none}) async {
     await _initialized.future; // Ensure initialization is complete
     switch (type) {
       case GameCardType.icebreaker:
-        return cards.where((element) => element.cardType == GameCardType.icebreaker).toList();
+        return cards
+            .where((element) => element.cardType == GameCardType.icebreaker)
+            .toList();
       case GameCardType.confession:
-        return cards.where((element) => element.cardType == GameCardType.confession).toList();
+        return cards
+            .where((element) => element.cardType == GameCardType.confession)
+            .toList();
       case GameCardType.deep:
-        return cards.where((element) => element.cardType == GameCardType.deep).toList();
+        return cards
+            .where((element) => element.cardType == GameCardType.deep)
+            .toList();
       case GameCardType.none:
         return cards;
     }
@@ -93,7 +97,7 @@ class CardService {
           return true;
       }
     }).toList();
-    
+
     // Reset index if out of bounds
     if (currentIndex >= filteredCards.length && filteredCards.isNotEmpty) {
       currentIndex = 0;
@@ -118,11 +122,11 @@ class CardService {
   // Get the next card (either randomly or sequentially)
   Future<db_helper.Card?> getNextCard() async {
     await _initialized.future; // Ensure initialization is complete
-    
+
     if (filteredCards.isEmpty) {
       return null;
     }
-    
+
     if (shuffleEnabled) {
       return getRandomCard();
     } else {
@@ -135,11 +139,11 @@ class CardService {
   // Method to get a random card, waits for initialization to complete
   Future<db_helper.Card> getRandomCard() async {
     await _initialized.future; // Ensure initialization is complete
-    
+
     if (filteredCards.isEmpty) {
       throw Exception('No cards available with current filters');
     }
-    
+
     var randomIndex = Random().nextInt(filteredCards.length);
     return filteredCards[randomIndex];
   }
