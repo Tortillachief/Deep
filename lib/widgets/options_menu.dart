@@ -14,6 +14,8 @@ class OptionsMenu extends StatelessWidget {
     required this.onOptionsApplied,
   });
 
+  static const optionsSpacing = 10.0;
+
   @override
   Widget build(BuildContext context) {
     final cardService = context.read<CardService>();
@@ -22,8 +24,9 @@ class OptionsMenu extends StatelessWidget {
     return StatefulBuilder(
       builder: (context, setModalState) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
+            spacing: optionsSpacing,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,7 +51,6 @@ class OptionsMenu extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
 
               // Stats section
               Container(
@@ -82,7 +84,6 @@ class OptionsMenu extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
 
               // Shuffle toggle
               AnimatedContainer(
@@ -127,7 +128,6 @@ class OptionsMenu extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 20),
               const Divider(color: Colors.white24),
 
               Row(
@@ -165,7 +165,6 @@ class OptionsMenu extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 10),
 
               // Card type selectors
               _buildCardTypeSelector(
@@ -183,7 +182,6 @@ class OptionsMenu extends StatelessWidget {
                 },
               ),
 
-              const SizedBox(height: 10),
 
               _buildCardTypeSelector(
                 setModalState: setModalState,
@@ -200,7 +198,6 @@ class OptionsMenu extends StatelessWidget {
                 },
               ),
 
-              const SizedBox(height: 10),
 
               _buildCardTypeSelector(
                 setModalState: setModalState,
@@ -213,31 +210,6 @@ class OptionsMenu extends StatelessWidget {
                   cardService.toggleCardTypeFilter(GameCardType.deep, value);
                   settingsProvider.toggleCardType(GameCardType.deep, value);
                 },
-              ),
-
-              // Apply filters button
-              const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    onOptionsApplied(); // Get next card with new filters
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        ColorUtils.withOpacity(Colors.deepPurple, 0.5),
-                    foregroundColor: Colors.white,
-                    elevation: 5,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: const Center(
-                    child: Text('Apply Filters'),
-                  ),
-                ),
               ),
             ],
           ),
