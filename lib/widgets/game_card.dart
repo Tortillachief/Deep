@@ -1,3 +1,4 @@
+import 'package:deep/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:deep/constants.dart';
 
@@ -22,32 +23,20 @@ class GameCard extends StatelessWidget {
           tag: 'cardHero',
           child: Card(
             color: config.backgroundColor,
-            elevation: 8,
-            shadowColor: config.backgroundColor.withOpacity(0.4),
+            elevation: 6,
+            shadowColor: ColorUtils.withOpacity(Colors.white, 0.2),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
+              //Stroke
               side: BorderSide(
-                color: config.textColor.withOpacity(0.2),
-                width: 1,
+                color: ColorUtils.withOpacity(config.textColor, 0.5),
+                width: 2,
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(20.0),
               child: Stack(
                 children: [
-                  // Card type indicator
-                  Positioned(
-                    top: 4,
-                    right: 4,
-                    child: Container(
-                      width: 12,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: config.backgroundColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
                   // Main content
                   Center(
                     child: Text(
@@ -62,22 +51,6 @@ class GameCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  // Swipe hint at bottom
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.swipe,
-                          color: config.textColor.withOpacity(0.3),
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
