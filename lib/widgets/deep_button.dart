@@ -1,3 +1,4 @@
+import 'package:deep/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
 class DeepButton extends StatelessWidget {
@@ -13,7 +14,7 @@ class DeepButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 20.0),
+      padding: const EdgeInsets.fromLTRB(0, 5, 25, 0),
       child: Container(
         height: 40,
         width: 40,
@@ -22,8 +23,8 @@ class DeepButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 1,
+              color: ColorUtils.withOpacity(Colors.black, 0.3),   
+              spreadRadius: 2,
               blurRadius: 3,
               offset: const Offset(0, 1),
             ),

@@ -34,7 +34,7 @@ class GameCard extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(30.0),
               child: Stack(
                 children: [
                   // Main content

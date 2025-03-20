@@ -192,7 +192,7 @@ class _HomePageState extends State<HomePage>
         transform: Matrix4.translationValues(_dragOffset.dx, 0, 0)
           ..translate(
               _dragOffset.dx / 10), // Slight translation for better effect
-        curve: Curves.easeOut,
+        curve: Curves.linear,
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
           transitionBuilder: (Widget child, Animation<double> animation) {
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage>
               opacity: animation,
               child: SlideTransition(
                 position: Tween<Offset>(
-                  begin: const Offset(1.0, 0.0),
+                  begin: const Offset(0.0, 0.0),
                   end: Offset.zero,
                 ).animate(animation),
                 child: child,
@@ -268,8 +268,6 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0,
-        title: const Text('Deep Conversations...',
-            style: TextStyle(color: Colors.white)),
         actions: [
           DeepButton(
             onPressed: () => showOptionsMenu(context, _getNextCard),

@@ -16,4 +16,3 @@ Color backgroundColor = Colors.grey.shade900;
 String icebreakerText = 'Icebreaker';
 String confessionText = 'Confession';
 String deepText = 'Deep';
-
