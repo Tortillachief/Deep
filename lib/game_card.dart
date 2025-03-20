@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:deep/constants.dart';
 
 class GameCard extends StatelessWidget {
   final String description;
@@ -42,7 +43,7 @@ class GameCard extends StatelessWidget {
                       width: 12,
                       height: 12,
                       decoration: BoxDecoration(
-                        color: _getCardTypeColor(),
+                        color: config.backgroundColor,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -52,8 +53,8 @@ class GameCard extends StatelessWidget {
                     child: Text(
                       description.toUpperCase(),
                       style: TextStyle(
-                        fontSize: 32, 
-                        color: config.textColor, 
+                        fontSize: 32,
+                        color: config.textColor,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                         height: 1.3,
@@ -70,7 +71,7 @@ class GameCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.swipe, 
+                          Icons.swipe,
                           color: config.textColor.withOpacity(0.3),
                           size: 16,
                         ),
@@ -85,17 +86,6 @@ class GameCard extends StatelessWidget {
       ),
     );
   }
-  
-  Color _getCardTypeColor() {
-    if (config == GameCardConfig.icebreaker) {
-      return Colors.blue;
-    } else if (config == GameCardConfig.confession) {
-      return Colors.amber;
-    } else if (config == GameCardConfig.deep) {
-      return Colors.deepPurple;
-    }
-    return Colors.grey;
-  }
 }
 
 class GameCardConfig {
@@ -107,19 +97,19 @@ class GameCardConfig {
     this.backgroundColor = Colors.white,
   });
 
-  static const GameCardConfig icebreaker = GameCardConfig(
-    textColor: Colors.black,
-    backgroundColor: Colors.white,
+  static GameCardConfig icebreaker = GameCardConfig(
+    textColor: icebreakerTextColor,
+    backgroundColor: icebreakerBackgroundColor,
   );
 
-  static const GameCardConfig confession = GameCardConfig(
-    textColor: Colors.black,
-    backgroundColor: Color.fromARGB(255, 124, 124, 124),
+  static GameCardConfig confession = GameCardConfig(
+    textColor: confessionTextColor,
+    backgroundColor: confessionBackgroundColor,
   );
 
-  static const GameCardConfig deep = GameCardConfig(
-    textColor: Colors.white,
-    backgroundColor: Colors.black,
+  static GameCardConfig deep = GameCardConfig(
+    textColor: deepTextColor,
+    backgroundColor: deepBackgroundColor,
   );
 }
 

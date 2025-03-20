@@ -1,4 +1,5 @@
 import 'package:deep/card_service.dart';
+import 'package:deep/constants.dart';
 import 'package:deep/database/database_helper.dart' as db_helper;
 import 'package:flutter/material.dart';
 import 'package:deep/game_card.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+          seedColor: icebreakerBackgroundColor,
           brightness: Brightness.dark,
         ),
         fontFamily: 'Roboto',
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.deepPurple,
+            backgroundColor: icebreakerBackgroundColor,
             foregroundColor: Colors.white,
             elevation: 3,
             shape: RoundedRectangleBorder(
@@ -61,13 +62,13 @@ class MyApp extends StatelessWidget {
         switchTheme: SwitchThemeData(
           thumbColor: MaterialStateProperty.resolveWith<Color>((states) {
             if (states.contains(MaterialState.selected)) {
-              return Colors.deepPurple;
+              return icebreakerTextColor;
             }
             return Colors.grey.shade400;
           }),
           trackColor: MaterialStateProperty.resolveWith<Color>((states) {
             if (states.contains(MaterialState.selected)) {
-              return Colors.deepPurple.withOpacity(0.5);
+              return icebreakerBackgroundColor.withOpacity(0.5);
             }
             return Colors.grey.shade700;
           }),
@@ -77,7 +78,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+          seedColor: icebreakerBackgroundColor,
           brightness: Brightness.dark,
         ),
       ),
@@ -107,11 +108,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   String _getCardTypeText(GameCardType type) {
     switch (type) {
       case GameCardType.icebreaker:
-        return 'ICEBREAKER';
+        return icebreakerText.toUpperCase();
       case GameCardType.confession:
-        return 'CONFESSION';
+        return confessionText.toUpperCase();
       case GameCardType.deep:
-        return 'DEEP';
+        return deepText.toUpperCase();
       default:
         return '';
     }
