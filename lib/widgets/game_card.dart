@@ -27,7 +27,6 @@ class GameCard extends StatelessWidget {
             shadowColor: ColorUtils.withOpacity(Colors.white, 0.2),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
-              //Stroke
               side: BorderSide(
                 color: ColorUtils.withOpacity(config.textColor, 0.5),
                 width: 2,
@@ -36,7 +35,42 @@ class GameCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Stack(
+                alignment: Alignment.center,
                 children: [
+                  // Tap icon and helper text at the top center
+                  Positioned(
+                    top: 0,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color:
+                                ColorUtils.withOpacity(config.textColor, 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.touch_app,
+                            color:
+                                ColorUtils.withOpacity(config.textColor, 0.5),
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 8), // Space between icon and text
+                        Text(
+                          "Tap for next card...",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color:
+                                ColorUtils.withOpacity(config.textColor, 0.5),
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   // Main content
                   Center(
                     child: Text(

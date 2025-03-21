@@ -276,7 +276,58 @@ class _HomePageState extends State<HomePage>
         ],
       ),
       body: currentCard == null
-          ? const Center(child: Text('No active cards...'))
+          ? Consumer<SettingsProvider>(
+              builder: (context, settings, _) {
+                bool hasFiltersEnabled = !settings.showIcebreakers ||
+                    !settings.showConfessions ||
+                    !settings.showDeeps;
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.library_books_outlined,
+                        size: 60,
+                        color: Colors.white70,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No Active Cards',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        hasFiltersEnabled
+                            ? 'Try adjusting your filters in the options menu'
+                            : 'There are no cards available in the database',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton.icon(
+                        onPressed: () => showOptionsMenu(context, _getNextCard),
+                        icon: const Icon(Icons.tune),
+                        label: const Text('Open Options'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12), 
+                          backgroundColor: ColorUtils.withOpacity(Colors.deepPurple, 0.5),
+                          foregroundColor: ColorUtils.withOpacity(Colors.white, 0.9),
+                          iconColor: ColorUtils.withOpacity(Colors.white, 0.9),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            )
           : Stack(
               children: [
                 // Main card display with swiper
